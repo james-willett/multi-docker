@@ -1,0 +1,23 @@
+language: generic
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t snakee580/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true snakee580/react-test npm test
+
+after_success:
+  - docker build -t snakee580/multi-client ./client
+  - docker build -t snakee580/multi-nginx ./nginx
+  - docker build -t snakee580/multi-server ./server
+  - docker build -t snakee580/multi-worker ./worker
+
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push snakee580/multi-client
+  - docker push snakee580/multi-nginx
+  - docker push snakee580/multi-server
+  - docker push snakee580/multi-worker
