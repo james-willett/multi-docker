@@ -20,7 +20,7 @@ function App() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Learn React
+            James is the best
           </a>
           <Link to="/">Home</Link>
           <Link to="/otherpage">Other page</Link>
